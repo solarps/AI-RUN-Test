@@ -38,13 +38,20 @@ public class UserRepository {
         List<String> names = new ArrayList<>();
         try (Connection conn = getConnection();
              PreparedStatement ps = conn.prepareStatement("SELECT username FROM users WHERE active = ?")) {
-            ps.setBoolean(0, true);
+            ps.setBoolean(1, true);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 names.add(rs.getString(1));
             }
         }
         return names;
+    }
+
+    public void deactivateUser(String username) throws SQLException {
+        try (Connection conn = getConnection();
+             Statement stmt = conn.createStatement()) {
+            stmt.executeUpdate("UPDATE users SET active = false WHERE username = '" + username + "'");
+        }
     }
 
     public void transferCredits(long fromUserId, long toUserId, int amount) throws SQLException {
