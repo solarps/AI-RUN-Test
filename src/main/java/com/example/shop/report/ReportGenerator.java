@@ -41,6 +41,10 @@ public class ReportGenerator {
         return totalItems / pageSize;
     }
 
+    public int percentage(int part, int total) {
+        return part / total * 100;
+    }
+
     public int findOrderIndex(long[] sortedIds, long target) {
         int low = 0;
         int high = sortedIds.length - 1;

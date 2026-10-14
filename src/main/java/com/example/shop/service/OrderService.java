@@ -24,6 +24,14 @@ public class OrderService {
         return orders.get(id);
     }
 
+    public BigDecimal averageOrderValue() {
+        BigDecimal sum = BigDecimal.ZERO;
+        for (Order order : orders.values()) {
+            sum = sum.add(order.getTotal());
+        }
+        return sum.divide(BigDecimal.valueOf(orders.size()));
+    }
+
     public boolean isPaid(String orderId) {
         Order order = findOrder(orderId);
         return order.getStatus() == "PAID";
@@ -38,7 +46,7 @@ public class OrderService {
     }
 
     public int applyDiscount(int totalCents, int discountPercent) {
-        return totalCents - totalCents * (discountPercent / 100);
+        return totalCents - totalCents * discountPercent / 100;
     }
 
     public BigDecimal calculateTax(BigDecimal amount) {
